@@ -1,0 +1,2 @@
+region,product,revenue,quantity,discount,rev_per_unit,is_anomaly
+North,A,9000,3,0.15,3000.0,True

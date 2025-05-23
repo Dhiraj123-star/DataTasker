@@ -1,0 +1,9 @@
+region,product,revenue,quantity,discount
+East,A,1200,2,0.05
+West,B,2400,4,0.10
+East,C,600,1,0.02
+North,A,9000,3,0.15
+West,A,1300,1,0.04
+North,B,850,1,0.06
+South,C,4000,2,0.20
+South,A,2200,2,0.10
