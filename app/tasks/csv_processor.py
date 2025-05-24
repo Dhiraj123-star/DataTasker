@@ -4,9 +4,10 @@ import os
 from datetime import datetime
 from app.models.task_log import log_task  # 👈 SQLite logging
 
-@celery_app.task(bind=True)
-def process_csv(self, file_path: str):
-    task_id = self.request.id
+
+@celery_app.task(name="app.tasks.csv_processor.process_csv")
+def process_csv(file_path: str): 
+    task_id = process_csv.request.id  # ✅ Access request context from the task
     start_time = datetime.utcnow()
     log_task(task_id, "started", start_time)
 
