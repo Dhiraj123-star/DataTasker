@@ -1,2 +1,3 @@
 region,product,revenue,quantity,discount,rev_per_unit,is_anomaly
-North,A,9000,3,0.15,3000.0,True
+East,A,15000,1,0.05,15000.0,True
+West,B,14000,1,0.1,14000.0,True

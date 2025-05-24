@@ -2,9 +2,14 @@ from app.worker.celery_app import celery_app
 import pandas as pd
 import os
 from datetime import datetime
+from app.models.task_log import log_task  # 👈 SQLite logging
 
-@celery_app.task
-def process_csv(file_path: str):
+@celery_app.task(bind=True)
+def process_csv(self, file_path: str):
+    task_id = self.request.id
+    start_time = datetime.utcnow()
+    log_task(task_id, "started", start_time)
+
     try:
         # Ensure output directory exists
         output_dir = os.path.dirname(file_path)
@@ -34,7 +39,6 @@ def process_csv(file_path: str):
         mean = df['rev_per_unit'].mean()
         std = df['rev_per_unit'].std()
 
-        # Adjusted threshold (2 * std is less strict than 3 * std)
         threshold = mean + 2 * std
         df['is_anomaly'] = (df['rev_per_unit'] > threshold)
 
@@ -52,10 +56,13 @@ def process_csv(file_path: str):
         if not anomalies_df.empty:
             anomalies_df.to_csv(anomalies_file, index=False)
         else:
-            # Create an empty anomalies file for traceability
             pd.DataFrame(columns=df.columns).to_csv(anomalies_file, index=False)
 
+        end_time = datetime.utcnow()
+        log_task(task_id, "completed", start_time, end_time)
+
         return {
+            "task_id": task_id,
             "status": "success",
             "region_summary": summary_file,
             "anomalies": anomalies_file,
@@ -66,4 +73,6 @@ def process_csv(file_path: str):
         }
 
     except Exception as e:
-        return {"status": "failed", "error": str(e)}
+        end_time = datetime.utcnow()
+        log_task(task_id, "failed", start_time, end_time)
+        return {"task_id": task_id, "status": "failed", "error": str(e)}
