@@ -42,12 +42,11 @@ def process_csv(self, file_path: str):
         threshold = mean + 2 * std
         df['is_anomaly'] = (df['rev_per_unit'] > threshold)
 
-        # Save output files
-        timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+        # Save output files using task_id
         base_name = os.path.splitext(file_path)[0]
 
-        summary_file = f"{base_name}_region_summary_{timestamp}.csv"
-        anomalies_file = f"{base_name}_anomalies_{timestamp}.csv"
+        summary_file = f"{base_name}_region_summary_{task_id}.csv"
+        anomalies_file = f"{base_name}_anomalies_{task_id}.csv"
 
         region_summary.columns = ['region', 'revenue_sum', 'revenue_mean', 'quantity_sum', 'discount_mean']
         region_summary.to_csv(summary_file, index=False)
