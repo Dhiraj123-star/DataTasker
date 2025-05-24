@@ -5,40 +5,47 @@
 
 ## Core Functionality
 
-**DataTasker** is a production-grade asynchronous CSV processing system built with FastAPI, Celery, Redis, and Pandas designed to deliver reliable, scalable, and traceable data insights. 📊⚡️
-
-* **Asynchronous Processing ⏳🔄**
-  Handles CSV file processing as background tasks using Celery and Redis, ensuring the API remains fast and responsive even under heavy load. 🚀
-
-* **Data Cleaning and Validation 🧹✅**
-  Automatically cleans incoming data by trimming whitespace, converting data types, dropping incomplete rows, and handling division by zero to maintain data integrity. 🛠️
-
-* **Aggregation by Region 🌍📈**
-  Summarizes sales data by calculating total and average revenue, total quantity sold, and average discount per region, enabling quick regional performance insights. 📉💡
-
-* **Sensitive Anomaly Detection 🚨🔍**
-  Calculates revenue per unit for each row and identifies anomalies using a configurable statistical threshold (mean + 2 × standard deviation). This flags unusually high revenue-per-unit cases for further investigation. ⚠️🔬
-
-* **Traceable Outputs 🗂️📅**
-  Saves CSV files for both regional summaries and detected anomalies with filenames mapped to Celery task IDs, enabling precise retrieval and audit trails. 🧾🛡️
-
-* **Task Tracking with ID 🧾📌**
-  Returns the Celery task ID in the API response when a CSV file is uploaded, allowing clients to track processing status, download results, and integrate job monitoring workflows. 🧭📬
-
-* **Task Status Tracking with SQLite 🗃️📊**
-  Logs task lifecycle events (started, completed, failed) with timestamps into an SQLite database, providing persistent, queryable records for auditing and monitoring CSV processing jobs. 📋🔍
-
-* **Result Retrieval & Download API 📥🗂️**
-  Provides endpoints to download generated summary and anomaly CSV files by referencing the task ID, enabling clients to seamlessly fetch processed outputs once tasks complete. 🔄🛠️
-
-* **Input Validation & Schema Enforcement 📊🔍**
-  Validates uploaded CSV files for required columns, correct data types, and formatting before processing, ensuring robust input handling and preventing processing errors early. ✅🔐
-
-* **Robust Error Handling 🛠️❗**
-  Catches and reports exceptions cleanly to maintain system reliability and facilitate debugging. 🐞🔧
+**DataTasker** is a production-grade asynchronous CSV processing system built with **FastAPI**, **Celery**, **Redis**, **Pandas**, and **SQLite**, now with a **CI/CD pipeline** and **multi-stage Docker build** for efficient deployment. ⚙️📦
 
 ---
 
-**DataTasker** focuses on scalability, maintainability, and operational transparency, making it an ideal core for any production data pipeline requiring asynchronous batch processing, sensitive anomaly detection, persistent task tracking, and reliable result retrieval. 🌟🔗
+### ✅ Key Features
+
+* **Asynchronous Processing ⏳🔄**
+  Handles CSV file processing as background tasks using **Celery** and **Redis**, keeping the API fast and responsive under heavy load. 🚀
+
+* **CI/CD Integration with GitHub Actions 🧪🚀**
+  Automated testing and deployment pipeline built with GitHub Actions that publishes Docker images to [Docker Hub](https://hub.docker.com/repository/docker/dhiraj918106/datatasker), enabling continuous integration and delivery.
+
+* **Multi-Stage Docker Build 🐳📦**
+  Implements a production-ready multi-stage Dockerfile that reduces image size and improves build speed, making the deployment lighter and more efficient.
+
+* **Data Cleaning and Validation 🧹✅**
+  Trims whitespace, converts data types, drops incomplete rows, and handles division by zero to maintain clean, reliable data. 🛠️
+
+* **Aggregation by Region 🌍📈**
+  Summarizes sales data per region (total/average revenue, quantity sold, average discount) for performance insights. 📊
+
+* **Sensitive Anomaly Detection 🚨🔍**
+  Detects outliers based on revenue-per-unit using a statistical threshold (`mean + 2 × std`), flagging data that needs further review. ⚠️🔬
+
+* **Traceable Outputs 🗂️📅**
+  Saves results with filenames tied to Celery task IDs, supporting auditability and traceability. 🧾
+
+* **Task Status Tracking with SQLite 🗃️📊**
+  Logs task IDs, status, start and end timestamps, and processing duration to a **SQLite** database for persistent tracking and reporting. 📋🔍
+
+* **Result Retrieval & Download API 📥🗂️**
+  Enables download of generated CSV files (summary and anomalies) using the task ID through dedicated API endpoints. 🔄
+
+* **Input Validation & Schema Enforcement 📊🔍**
+  Checks uploaded CSV files for required columns and valid formatting before processing. ✅
+
+* **Robust Error Handling 🛠️❗**
+  Gracefully catches and logs errors during data processing to prevent system failure and support debugging. 🐞🔧
+
+---
+
+**DataTasker** emphasizes **scalability**, **automation**, and **deployment-readiness**, making it an ideal foundation for any data-heavy system that demands background job execution, anomaly detection, and DevOps excellence. 🌐⚡
 
 ---
